@@ -1,0 +1,21 @@
+import streamlit as st
+import openai
+
+st.title("AI Support Assistant 🤖")
+st.write("Ask any question and the support assistant will help you.")
+
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+user_input = st.text_input("Enter your question:")
+
+if st.button("Get Answer"):
+    if user_input:
+        response = openai.ChatCompletion.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a helpful customer support assistant."},
+                {"role": "user", "content": user_input}
+            ]
+        )
+        st.write("### Answer:")
+        st.write(response["choices"][0]["message"]["content"])
